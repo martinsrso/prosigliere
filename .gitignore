@@ -1,0 +1,6 @@
+prosig
+*.exe
+*.dll
+*.so
+*.dylib
+vendor/

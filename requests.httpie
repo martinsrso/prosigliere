@@ -1,0 +1,55 @@
+# HTTPie Examples for Prosig API
+# Note: Use --ignore-stdin flag when running in scripts or non-interactive environments
+
+# 1. Create a new blog post
+http --ignore-stdin --json POST http://localhost:8080/api/posts \
+  title="My First Blog Post" \
+  content="This is the content of my first blog post. It's really exciting!" \
+  --auth admin:secret
+
+# 2. List all blog posts (with comment counts)
+http --ignore-stdin GET http://localhost:8080/api/posts \
+  --auth admin:secret
+
+# 3. Get a specific blog post by ID (including comments)
+http --ignore-stdin GET http://localhost:8080/api/posts/1 \
+  --auth admin:secret
+
+# 4. Add a comment to a blog post
+http --ignore-stdin --json POST http://localhost:8080/api/posts/1/comments \
+  content="This is a great post! Thanks for sharing." \
+  --auth admin:secret
+
+# 5. Add another comment
+http --ignore-stdin --json POST http://localhost:8080/api/posts/1/comments \
+  content="I completely agree with your points." \
+  --auth admin:secret
+
+# 6. Create another blog post
+http --ignore-stdin --json POST http://localhost:8080/api/posts \
+  title="Second Post" \
+  content="This is my second blog post with more interesting content." \
+  --auth admin:secret
+
+# 7. List all posts again (should show 2 posts with comment counts)
+http --ignore-stdin GET http://localhost:8080/api/posts \
+  --auth admin:secret
+
+# 8. Get the second post
+http --ignore-stdin GET http://localhost:8080/api/posts/2 \
+  --auth admin:secret
+
+# 9. Health check (no auth required)
+http --ignore-stdin GET http://localhost:8080/health
+
+# 10. Get metrics (no auth required)
+http --ignore-stdin GET http://localhost:8080/metrics
+
+# 10. Using session cookie (after first auth, subsequent requests can use cookie)
+# First request will set the session cookie automatically
+http --ignore-stdin GET http://localhost:8080/api/posts \
+  --auth admin:secret \
+  --print=Hh
+
+# Then use the cookie for subsequent requests (replace SESSION_ID with actual cookie value)
+# http --ignore-stdin GET http://localhost:8080/api/posts Cookie:session_id=SESSION_ID
